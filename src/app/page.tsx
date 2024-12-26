@@ -1,101 +1,110 @@
-import Image from "next/image";
+"use client"
+import React, { useEffect, useState } from 'react';
+import { Command, Timer, Keyboard, Settings, Globe } from 'lucide-react';
+import { TypingTest } from '../components/TypingTest';
+import { Header } from '../components/Header';
+import { Dropdown } from '../components/Dropdown';
+import { Leaderboard } from '../components/Leaderboard';
+import { useTimer } from '../hooks/useTimer';
+import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
+import { base_url, challenges } from '../constants/utils';
+import { LanguageSelect } from '../components/LanguageSelect';
 
-export default function Home() {
+import { Helmet } from 'react-helmet';
+import Blog from '@/components/Blog';
+import Head from 'next/head';
+import { LoginReminder } from '@/components/LoginReminder';
+
+const times = ['15', '30', '60', '120'];
+
+function Home() {
+  const [language, setLanguage] = useState('english');
+  const [time, setTime] = useState('30');
+  const [mode, setMode] = useState<'time' | 'words'>('time');
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const { profile } = useAuth(); 
+
+  const handleTestComplete = (data) => {
+    setIsActive(false);
+
+      axios.post(`${base_url}/typing-test`, { userId:profile?.user?.id, time, ...data })
+    
+   
+  };
+
+  const { timeLeft, resetTimer } = useTimer(parseInt(time), isActive, setIsComplete);
+
+  useEffect(() => {
+    resetTimer();
+  }, [time]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <>
+    <LoginReminder/>
+    <div className="min-h-screen bg-[#323437] text-[#646669] flex flex-col">
+      <Helmet>
+      <title>Monkeytype | Customizable Typing Tests</title>
+      <link rel="canonical" href="https://monkeytype.live/" />
+      </Helmet>
+      <Header/>
+      
+      <main className="flex-1 flex flex-col items-center w-full px-6 mt-4">
+        <div className="w-full max-w-[850px] flex flex-col items-center mb-12">
+          {/* Top Settings Bar */}
+          {!isComplete &&
+            <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
+            <LanguageSelect
+            options={challenges}
+            value={language}
+            onChange={setLanguage}
+            icon={<Globe className="w-4 h-4" />}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <Dropdown
+              options={times}
+              value={time}
+              onChange={setTime}
+              icon={<Timer className="w-4 h-4" />}
+            />
+            {/* <button className="hover:text-[#d1d0c5] transition-colors flex items-center gap-2">
+              <Keyboard className="w-4 h-4" />
+              default
+            </button>
+            <button className="hover:text-[#d1d0c5] transition-colors">
+              <Settings className="w-4 h-4" />
+            </button> */}
+          </div>
+          }
+          
+
+          {showLeaderboard ? (
+            <Leaderboard />
+          ) : (
+            <TypingTest 
+              key={`${language}-${time}-${mode}`}
+              mode={mode} 
+              timeLimit={parseInt(time)} 
+              language={language}
+              timeLeft={timeLeft}
+              setIsActive = {setIsActive}
+              isActive = {isActive}
+              isComplete = {isComplete}
+              setIsComplete = {setIsComplete}
+              resetTimer = {resetTimer}
+              handleTestComplete = {handleTestComplete}
+            />
+          )}
+
+          {/* blog */}
+           <Blog/>
+          {/* blog */}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
+    </>
   );
 }
+
+export default Home;
