@@ -43,7 +43,9 @@ function Home() {
 
   return (
     <>
-    <LoginReminder/>
+    {!profile?.user && 
+      <LoginReminder/>
+    }
     <div className="min-h-screen bg-[#323437] text-[#646669] flex flex-col">
       <Helmet>
       <title>Monkeytype | Customizable Typing Tests</title>
