@@ -50,7 +50,6 @@ export const Leaderboard: React.FC<any> = ({leaders}:any) => {
         {leaders.map((entry) => (
           <Link
             href={`/profile/${entry.publicId}`}
-            target='_blank'
             key={entry.rank}
             className="flex items-center justify-between p-3 bg-[#363739] rounded-lg hover:bg-[#404244] transition-colors"
           >
