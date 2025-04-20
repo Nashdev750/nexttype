@@ -8,6 +8,8 @@ import { Header } from '@/components/Header';
 import {Helmet} from 'react-helmet'
 import { useParams, useSearchParams } from 'next/navigation';
 import TypingGraph from '@/components/TypingGraph';
+import { Suspense } from 'react';
+
 
 
 function StatCard({ icon: Icon, label, value, subValue }: { icon: React.ElementType; label: string; value: string; subValue?: string }) {
@@ -25,7 +27,7 @@ function StatCard({ icon: Icon, label, value, subValue }: { icon: React.ElementT
   );
 }
 
-function Page() {
+function AccountInfo() {
   const [loading,setLoading] = useState(true)
   const [notFound,setNotFound] = useState(false)
   const [profile,setProfile] = useState<any>({})
@@ -160,6 +162,14 @@ function Page() {
         </div>
       </div>
     </div>
+  );
+}
+
+function Page() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-base-bg text-base-text flex items-center justify-center">Loading profile...</div>}>
+      <AccountInfo />
+    </Suspense>
   );
 }
 
