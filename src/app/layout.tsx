@@ -1,7 +1,7 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 
 export default function RootLayout({
@@ -40,6 +40,7 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="language" content="English" />
       </head>
+
       <body
       >
         <GoogleOAuthProvider
@@ -49,6 +50,7 @@ export default function RootLayout({
           {children}
         </AuthProvider>
         </GoogleOAuthProvider>
+        <GoogleAnalytics gaId="G-EYMJDLF22G" /> 
       </body>
     </html>
   );

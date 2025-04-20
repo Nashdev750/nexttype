@@ -6,8 +6,7 @@ import axios from 'axios';
 import { base_url, formatTimeSpent } from '@/constants/utils';
 import { Header } from '@/components/Header';
 import {Helmet} from 'react-helmet'
-import { useRouter } from 'next/router';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 
 
 function StatCard({ icon: Icon, label, value, subValue }: { icon: React.ElementType; label: string; value: string; subValue?: string }) {
@@ -29,8 +28,8 @@ function Page() {
   const [loading,setLoading] = useState(true)
   const [notFound,setNotFound] = useState(false)
   const [profile,setProfile] = useState<any>({})
-  const router  = useParams()
-  const account = router.account
+  const searchParams = useSearchParams();
+  const account = searchParams.get('q');
 
   const fetchProfile = async () => {
     axios.get(base_url+'/profile/'+account).then((res)=>{

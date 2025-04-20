@@ -26,7 +26,7 @@ function Profile() {
   const [showCopiedTooltip, setShowCopiedTooltip] = React.useState(false);
 
   const copyProfileUrl = () => {
-    const profileUrl = `${window.location.origin}/profile/${profile.user.publicId}`;
+    const profileUrl = `${window.location.origin}/profile?q=${profile.user.publicId}`;
     navigator.clipboard.writeText(profileUrl);
     setShowCopiedTooltip(true);
     setTimeout(() => setShowCopiedTooltip(false), 2000);
