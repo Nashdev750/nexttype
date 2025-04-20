@@ -11,7 +11,7 @@ export default function LeaderboardPage() {
   const getLeaders = ()=>{
       axios.get(base_url+'/leaderboard')
       .then((res:any)=>{
-        console.log()
+        console.log(res.data.leaderboard)
          setLeaders(res.data.leaderboard)
       })
   }

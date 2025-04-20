@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trophy, Medal, Award } from 'lucide-react';
 import Link from 'next/link';
+import TypingGraph from './TypingGraph';
 
 
 interface LeaderboardEntry {
@@ -48,28 +49,39 @@ export const Leaderboard: React.FC<any> = ({leaders}:any) => {
       
       <div className="space-y-2">
         {leaders.map((entry) => (
-          <Link
-            href={`/profile?q=${entry.publicId}`}
-            key={entry.rank}
-            className="flex items-center justify-between p-3 bg-[#363739] rounded-lg hover:bg-[#404244] transition-colors"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center w-8">
-                <RankIcon rank={entry.rank} />
-              </div>
-              <span className="text-[#d1d0c5]">{entry.username}...</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <div className="text-[#d1d0c5]">
-                <span className="font-mono">{entry.wpm}</span>
-                <span className="text-[#646669] ml-1">wpm</span>
-              </div>
-              <div className="text-[#d1d0c5] w-20 text-right">
-                <span className="font-mono">{entry.accuracy}</span>
-                <span className="text-[#646669] ml-1">%</span>
-              </div>
-            </div>
-          </Link>
+           <Link
+           href={`/profile?q=${entry.publicId}`}
+           key={entry.rank}
+           className="flex items-center justify-between p-3 bg-[#363739] rounded-lg hover:bg-[#404244] transition-colors"
+         >
+           <div className="flex items-center gap-4">
+             <div className="flex items-center justify-center w-8">
+               <RankIcon rank={entry.rank} />
+             </div>
+             <span className="text-[#d1d0c5]">{entry.username}...</span>
+           </div>
+           <div className="flex items-center gap-6">
+             {entry.keystrokes && entry.keystrokes.length > 0 && (
+               <div className="w-20 h-10 flex items-center">
+                
+                 <TypingGraph 
+                   keystrokes={entry.keystrokes} 
+                   width={200} 
+                   height={30} 
+                   className="opacity-80 hover:opacity-100 transition-opacity"
+                 />
+               </div>
+             )}
+             <div className="text-[#d1d0c5]">
+               <span className="font-mono">{entry.wpm}</span>
+               <span className="text-[#646669] ml-1">wpm</span>
+             </div>
+             <div className="text-[#d1d0c5] w-20 text-right">
+               <span className="font-mono">{entry.accuracy}</span>
+               <span className="text-[#646669] ml-1">%</span>
+             </div>
+           </div>
+         </Link>
         ))}
       </div>
     </div>

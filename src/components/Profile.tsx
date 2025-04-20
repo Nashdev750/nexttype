@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { formatDistanceToNow } from 'date-fns';
 import { formatTimeSpent } from '@/constants/utils';
 import Tooltip from './Tooltip';
+import TypingGraph from './TypingGraph';
 
 function StatCard({ icon: Icon, label, value, subValue }: { icon: React.ElementType; label: string; value: string; subValue?: string }) {
   return (
@@ -136,6 +137,16 @@ function Profile() {
                     <div className="text-zinc-500">accuracy: {data.accuracy}%</div>
                   </div>
                 </div>
+                {data.keystrokes && data.keystrokes.length > 0 && (
+               <div className="w-20 h-10 flex items-center">
+                 <TypingGraph 
+                   keystrokes={data.keystrokes} 
+                   width={200} 
+                   height={30} 
+                   className="opacity-80 hover:opacity-100 transition-opacity"
+                 />
+                  </div>
+                )}
                 <div className="text-right text-sm">
                   <div className="text-zinc-400">{formatDistanceToNow(new Date(data.completedAt), { addSuffix: true })}</div>
                   <div className="text-zinc-600">raw: {data.rawWpm}</div>
