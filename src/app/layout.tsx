@@ -41,7 +41,7 @@ export default function RootLayout({
         <meta name="language" content="English" />
         <meta name="monetag" content="70c57ce7ff12de82d5512a6b4f61493c"></meta>
       </head>
-
+      <script src="https://kulroakonsu.net/88/tag.min.js" data-zone="143719" async data-cfasync="false"></script>
       <body
       >
         <GoogleOAuthProvider
@@ -52,6 +52,7 @@ export default function RootLayout({
         </AuthProvider>
         </GoogleOAuthProvider>
         <GoogleAnalytics gaId="G-EYMJDLF22G" /> 
+       
       </body>
     </html>
   );
