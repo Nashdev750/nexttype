@@ -3,14 +3,13 @@ import { useWords } from '../hooks/useWords';
 import { useCaret } from '../hooks/useCaret';
 import { useTypingStats } from '../hooks/useTypingStats';
 import { Timer } from './Timer';
-import Stats from './Stats';
 import { Footer } from './Footer';
 import axios from 'axios';
 import { base_url } from '../constants/utils';
 import { useAuth } from '../contexts/AuthContext';
 import SpeedAnalysis from './SpeedAnalysis';
-import { Header } from './Header';
 import { calculateWPM } from '../helpers/utils';
+
 
 interface Props {
   mode: 'time' | 'words';
@@ -23,6 +22,7 @@ interface Props {
   setIsComplete: (isComplete: boolean) => void;
   resetTimer: () => void;
   handleTestComplete: (data: any) => void;
+  soundEnabled: boolean;
 }
 
 interface LetterState {
@@ -30,7 +30,7 @@ interface LetterState {
   state: 'untyped' | 'correct' | 'incorrect';
 }
 
-export const TypingTest = React.memo(function TypingTest({ mode, timeLimit, language, timeLeft, setIsActive, isActive, isComplete, setIsComplete, resetTimer,handleTestComplete }: Props) {
+export const TypingTest = React.memo(function TypingTest({ mode, timeLimit, language, timeLeft, setIsActive, isActive, isComplete, setIsComplete, resetTimer,handleTestComplete, soundEnabled }: Props) {
 
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
@@ -47,6 +47,24 @@ export const TypingTest = React.memo(function TypingTest({ mode, timeLimit, lang
   const wordsContainerRef = useRef<HTMLDivElement>(null);
   let words = useWords(500, language,shaffleWords);
   const { profile } = useAuth();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const keyPressSound = useRef<HTMLAudioElement | null>(null);
+  const errorSound = useRef<HTMLAudioElement | null>(null);
+  
+  // Initialize audio
+  useEffect(() => {
+    keyPressSound.current = new Audio('/key.mp3');
+    keyPressSound.current.volume = 0.2;
+    
+    errorSound.current = new Audio('/key.mp3');
+    errorSound.current.volume = 0.2;
+    
+    return () => {
+      keyPressSound.current = null;
+      errorSound.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     const initialStates = words.map(word => 
@@ -94,6 +112,8 @@ export const TypingTest = React.memo(function TypingTest({ mode, timeLimit, lang
  
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // sound
+
     if (!isActive){
       setIsActive(true);
       setStartTime(Date.now());
@@ -166,6 +186,10 @@ export const TypingTest = React.memo(function TypingTest({ mode, timeLimit, lang
         const newWordStates = [...wordStates];
         const isCorrect = e.key === currentWord[currentLetterIndex];
         
+        keyPressSound.current.currentTime = 0;
+        keyPressSound.current.play().catch(() => {});
+
+        
         newWordStates[currentWordIndex][currentLetterIndex].state = 
           isCorrect ? 'correct' : 'incorrect';
         
@@ -178,9 +202,14 @@ export const TypingTest = React.memo(function TypingTest({ mode, timeLimit, lang
       }
     }
   };
-
+ useEffect(()=>{
+    keyPressSound.current.pause();
+ },[soundEnabled])
+ 
   if (isComplete) {
+    keyPressSound.current.pause();
     return<>
+     <Footer onRestart={resetTest} />
      <SpeedAnalysis keystrokes={keystrokes} time={timeLimit}/>
      <Footer onRestart={resetTest} />
      </>

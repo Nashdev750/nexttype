@@ -15,8 +15,9 @@ import { Helmet } from 'react-helmet';
 import Blog from '@/components/Blog';
 import Head from 'next/head';
 import { LoginReminder } from '@/components/LoginReminder';
+import { Volume2, Volume, RotateCcw } from 'lucide-react';
 
-const times = ['15', '30', '60', '120'];
+const times = ['15', '30', '60', '120','180', '240','300'];
 
 function Home() {
   const [language, setLanguage] = useState('english');
@@ -26,6 +27,7 @@ function Home() {
   const [isActive, setIsActive] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const { profile } = useAuth(); 
+  const [soundEnabled, setSoundEnabled] = useState(true)
 
   const handleTestComplete = (data) => {
     setIsActive(false);
@@ -70,6 +72,13 @@ function Home() {
               onChange={setTime}
               icon={<Timer className="w-4 h-4" />}
             />
+            <button 
+              onClick={()=>setSoundEnabled(!soundEnabled)}
+              className="p-2 rounded-md hover:bg-gray-800 transition-colors"
+              title={soundEnabled ? "Sound On" : "Sound Off"}
+            >
+              {soundEnabled ? <Volume2 size={20} /> : <Volume size={20} className="text-gray-500" />}
+            </button>
             {/* <button className="hover:text-[#d1d0c5] transition-colors flex items-center gap-2">
               <Keyboard className="w-4 h-4" />
               default
@@ -96,6 +105,7 @@ function Home() {
               setIsComplete = {setIsComplete}
               resetTimer = {resetTimer}
               handleTestComplete = {handleTestComplete}
+              soundEnabled={soundEnabled}
             />
           )}
 
