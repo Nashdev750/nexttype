@@ -74,7 +74,7 @@ const BlogDetail = ({blog}) => {
             );
 
           case 'header': {
-            const Tag = `h${block.data.level}`;
+            const Tag:any = `h${block.data.level}`;
             const isH1 = block.data.level === 1;
             const className = isH1
               ? 'text-[#d1d0c5] text-4xl font-bold mb-6'
