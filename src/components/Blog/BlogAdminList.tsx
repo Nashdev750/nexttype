@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Edit, Trash2, Plus, AlertTriangle } from 'lucide-react';
 import { BlogPost } from '../../types/blog';
-import { getAllBlogs, deleteBlog } from '../../helpers/blogStorage';
 import Link from 'next/link';
 
 const BlogAdminList: React.FC = () => {
@@ -15,8 +14,6 @@ const BlogAdminList: React.FC = () => {
   }, []);
 
   const loadBlogs = () => {
-    const allBlogs = getAllBlogs();
-    setBlogs(allBlogs);
   };
 
   const confirmDelete = (id: string) => {
@@ -26,7 +23,6 @@ const BlogAdminList: React.FC = () => {
 
   const handleDelete = () => {
     if (blogToDelete) {
-      deleteBlog(blogToDelete);
       loadBlogs();
       setShowDeleteModal(false);
       setBlogToDelete(null);
@@ -83,7 +79,7 @@ const BlogAdminList: React.FC = () => {
             </thead>
             <tbody className="bg-gray-800 divide-y divide-gray-700">
               {blogs.map((blog) => (
-                <tr key={blog.id} className="hover:bg-gray-750">
+                <tr key={blog._id} className="hover:bg-gray-750">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-white">
                       {blog.title}
@@ -125,7 +121,7 @@ const BlogAdminList: React.FC = () => {
                         <Edit size={16} />
                       </Link>
                       <button
-                        onClick={() => confirmDelete(blog.id)}
+                        onClick={() => confirmDelete(blog._id)}
                         className="text-red-400 hover:text-red-300"
                         title="Delete"
                       >

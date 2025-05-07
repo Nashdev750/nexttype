@@ -1,8 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { Clock, User, Tag, Battery as Category, ArrowLeft, Edit } from 'lucide-react';
+import { Clock, User, Tag, Battery as Category, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 
 const BlogDetail = ({blog}) => {
 

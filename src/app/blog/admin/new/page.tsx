@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { ArrowLeft } from 'lucide-react';
 import { BlogFormData } from '../../../../types/blog';
 import { createBlogPost } from '@/helpers/blogStorage';
