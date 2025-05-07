@@ -114,7 +114,7 @@ const BlogAdminList: React.FC = () => {
                         View
                       </Link>
                       <Link
-                        href={`/blog/admin/edit/${blog.id}`}
+                        href={`/blog/admin/edit/${blog._id}`}
                         className="text-indigo-400 hover:text-indigo-300"
                         title="Edit"
                       >
