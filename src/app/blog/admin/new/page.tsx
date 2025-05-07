@@ -46,7 +46,7 @@ const Page = () => {
   };
   
   return (
-    <div>
+    <div className='max-w-[850px] mx-auto mt-4'>
       <Header/>
       <div className="mb-6">
         <Link 
