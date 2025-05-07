@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { BlogFormData } from '../../../../types/blog';
 import { createBlogPost } from '@/helpers/blogStorage';
-import BlogForm from '@/components/Blog/BlogForm';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
+import dynamic from 'next/dynamic';
+const BlogForm = dynamic(() => import('@/components/Blog/BlogForm'), {
+  ssr: false,
+});
 
 
 const Page = () => {
@@ -47,11 +50,11 @@ const Page = () => {
       <Header/>
       <div className="mb-6">
         <Link 
-          href="/blog/admin" 
+          href="/blog" 
           className="inline-flex items-center text-gray-400 hover:text-white transition-colors"
         >
           <ArrowLeft size={16} className="mr-1" />
-          Back to Admin
+          Back to Blogs
         </Link>
         <h2 className="text-2xl font-bold text-white mt-2">Create New Blog Post</h2>
       </div>

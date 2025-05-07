@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { User, BarChart2, Keyboard, MessageSquare, BookOpen, Contact, Phone } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
