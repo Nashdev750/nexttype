@@ -27,10 +27,10 @@ export const Header: React.FC = () => {
           <BarChart2 className="w-4 h-4" />
           leaderboard
           </Link>
-          <Link href="/thread" className={`hover:text-[#d1d0c5] transition-colors flex items-center gap-2
-            ${location == '/thread'?'text-[#e2b714]':''}`}>
-          <MessageSquare className="w-4 h-4" />
-          Thread
+          <Link href="/blog" className={`hover:text-[#d1d0c5] transition-colors flex items-center gap-2
+            ${location == '/blog'?'text-[#e2b714]':''}`}>
+          <BarChart2 className="w-4 h-4" />
+          blog
           </Link>
           <Link href="/privacy-policy" className={`hover:text-[#d1d0c5] transition-colors flex items-center gap-2
             ${location == '/privacy-policy'?'text-[#e2b714]':''}`}>

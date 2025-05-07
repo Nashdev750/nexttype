@@ -19,3 +19,6 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.ce-toolbar__actions{
+  background-color: #ededed;
+}

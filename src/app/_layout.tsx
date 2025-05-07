@@ -12,13 +12,12 @@ import { base_url, challenges } from '../constants/utils';
 import { LanguageSelect } from '../components/LanguageSelect';
 
 import { Helmet } from 'react-helmet';
-import Blog from '@/components/Blog';
 import { LoginReminder } from '@/components/LoginReminder';
 import { Volume2, Volume, RotateCcw } from 'lucide-react';
 
 const times = ['15', '30', '60', '120','180', '240','300'];
 
-function Home() {
+function PageLayout({children}) {
   const [language, setLanguage] = useState('english');
   const [time, setTime] = useState('30');
   const [mode, setMode] = useState<'time' | 'words'>('time');
@@ -109,7 +108,7 @@ function Home() {
           )}
 
           {/* blog */}
-           <Blog/>
+           {children}
           {/* blog */}
         </div>
       </main>
@@ -118,4 +117,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default PageLayout;
