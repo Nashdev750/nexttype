@@ -22,3 +22,16 @@ body {
 .ce-toolbar__actions{
   background-color: #ededed;
 }
+
+h1,h2,h3,h4,h5{
+  color: rgb(209 208 197 / var(--tw-text-opacity, 1));
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+h1{
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
